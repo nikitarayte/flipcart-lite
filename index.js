@@ -17,14 +17,13 @@ app.use("/api/auth", require("./routes/auth.routes"))
 app.use("/api/public", require("./routes/public.routes"))
 app.use("/api/admin", customerProtected, require("./routes/admin.routes"))
 
-app.use("*",(req,res)=>{
-    res.status(404).json({message:"resource not found"})
+app.use("*", (req, res) => {
+    res.sendFile(path.join(_dirname, "dist", "index.html"))
 })
 
 mongoose.connect(process.env.MONGO_URL)  //to connect to database
 mongoose.connection.once("open", () => {  //after connecting to database it calls to this function
     console.log("mongo connected");
+    app.listen(process.env.PORT, console.log("server running"))
 
 })
-
-app.listen(process.env.PORT, console.log("server running"))
